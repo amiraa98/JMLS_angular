@@ -1,0 +1,184 @@
+<!-- <div class="container">
+    <header >
+     class="jumbotron"<p>{{ content }}</p>
+      <p>{{ listCompte }}</p>
+    </header>
+  </div> -->
+  
+  
+    
+    <mat-tab-group>
+  
+      <!-- Tableau d'affichage, supprission et modification -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">pageview</mat-icon>
+          Afficher
+        </ng-template>
+        <p-table [value]="listCompte" responsiveLayout="scroll" >
+        
+          <ng-template pTemplate="header">
+              <tr>
+                  <th *ngFor="let col of cols">
+                    <center> {{col.header}}</center> 
+                  </th>
+                  <th><center>Action</center></th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-compte>
+              <tr>
+                  <td *ngFor="let col of cols">
+                    <center> {{compte[col.field]}}</center> 
+                  </td>
+                  <td>
+                    <center><button mat-raised-button color="primary" class="button1" type="button" > Modifier  </button>
+                    <button mat-raised-button color="warn" class="button1" (click)="deleteCompte(compte.idcompte)" type="button" > Supprimer </button> 
+                  </center></td>
+              </tr>
+          </ng-template>
+      </p-table>
+     </mat-tab>
+  
+  
+     <!-- Formulaire d'ajout -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">add_box</mat-icon>
+          Ajouter
+        </ng-template>
+        <form  #F="ngForm" >
+          <div class="form-group">
+            <label>Relevé d'Identité Bancaire</label>
+          <input type="text" class="form-control" pattern="[0-9]{13}" 
+          required  #rib="ngModel" [(ngModel)]="compte.rib">
+          </div>
+          <div class="alert alert-danger" *ngIf="rib.invalid && rib.touched" >
+          Le RIB est obligatoire !! 
+          <div class="alert alert-danger" *ngIf="rib.errors.pattern" >
+            Le RIB doit avoir une longueur de 13 chiffres !
+            </div>
+          </div>
+               
+          
+          <div class="form-group">
+          <label>Type du compte</label>
+          <br>
+            <mat-form-field  >
+              <mat-select [(ngModel)]="compte.type" name="type" >
+                <mat-option *ngFor="let type of types" [value]="type.value" >
+                  {{type.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            </div>
+
+            <div class="form-group">
+              <label>Devise</label>
+              <br>
+            <mat-form-field class="form-group" appearance="fill">
+              <mat-label>Devise</mat-label>
+              <mat-select  name="type" [(ngModel)]="compte.devise"> 
+                <mat-option *ngFor="let dev of devise" [value]="dev.value">
+                 {{dev.value}}: {{dev.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label>Date de création</label>
+            <br>
+            <mat-form-field >
+              <mat-label>Choose a date</mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="compte.datedecreation" required  #dcre="ngModel" >
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            </div>
+            <div class="alert alert-danger" *ngIf="dcre.invalid && dcre.touched" >
+              Ce champs est obligatoire !!
+              </div>
+  
+          <div class="form-group">
+          <label>Solde Actuel</label>
+          <br>
+          <mat-form-field floatLabel="never">
+            <input matInput type="number" class="example-right-align" placeholder="0" [(ngModel)]="compte.soldeactuel" required  #sact="ngModel">
+            <span matPrefix>{{compte.devise}}&nbsp;</span>
+  
+          </mat-form-field>
+          </div>
+          <div class="alert alert-danger" *ngIf="sact.invalid && sact.touched" >
+            Ce champs est obligatoire !!
+            </div>
+  
+            <div class="form-group">
+              <label>Solde Disponible</label>
+              <br>
+              <mat-form-field floatLabel="never">
+                <input matInput type="number" class="example-right-align" placeholder="0" [(ngModel)]="compte.soldedisponible" required  #sdis="ngModel">
+                <span matPrefix>{{compte.devise}}&nbsp;</span>
+            
+              </mat-form-field>
+              </div>
+              <div class="alert alert-danger" *ngIf="sdis.invalid && sdis.touched" >
+                Ce champs est obligatoire !!
+            </div>
+            <div class="form-group">
+              <label>Interet</label>
+              <br>
+              <mat-form-field floatLabel="never">
+                <input matInput type="number" class="example-right-align" placeholder="0,0%" [(ngModel)]="compte.interet" required  #interet="ngModel">
+                <span matSuffix>%</span>
+            
+              </mat-form-field>
+              </div>
+              <div class="alert alert-danger" *ngIf="interet.invalid && interet.touched" >
+                Ce champs est obligatoire !!
+            </div>
+              <div class="form-group">
+                <div class="p-field-checkbox">
+                  <label>Etat (Actif/Inactif)</label>
+                  <br>
+                  <p-checkbox [(ngModel)]="compte.etat" binary="true" inputId="binary"></p-checkbox>
+              </div>
+              </div>
+  
+          <div class="form-group">
+            <button type="submit" [disabled]="F.invalid" (click)="addCompte()" >
+              Ajouter un compte
+            </button>
+          </div>
+  
+          </form>
+          </mat-tab>  
+  
+  
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="example-tab-icon">check_circle</mat-icon>
+          Affecter
+            </ng-template>
+             <div class="form-group">
+              <label>Compte</label>
+            <select [(ngModel)]="compteid" class="form-control"  >
+              <option *ngFor="let compte of listCompte " value="{{compte.idcompte}}">
+                {{compte.idcompte}} - {{((compte.rib - (compte.rib % 1000000000))/1000000000) }}XXXXX{{compte.rib % 10000}}    
+              </option>
+            </select>
+           </div>
+  
+  
+  
+            
+            <div class="form-group">
+              <label>Client</label>
+              <select [(ngModel)]="userid" class="form-control" >
+                <option *ngFor="let user of Users" value="{{user.id}}">
+                  {{user.cin % 100000}} - {{user.lastname}} {{user.firstname}} 
+                </option>
+              </select>
+            </div>
+  
+            <button mat-raised-button color="primary" class="button1" (click)="assign(compteid,userid)" type="button" > Affecter  </button>
+          </mat-tab>
+    </mat-tab-group>
