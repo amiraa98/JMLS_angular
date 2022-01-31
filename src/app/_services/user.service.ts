@@ -46,6 +46,6 @@ export class UserService {
     return this.http.get<User[]>(this.RetrieveClients);}
 
   updatePassword(username:String,password:String):Observable<any>{
-    return this.http.put(this.UpdatePassword,username+"/"+password);
+    return this.http.put(this.UpdatePassword+username+"/"+password,null);
   }
 }

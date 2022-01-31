@@ -32,7 +32,7 @@
                   </td>
                   <td>
                     <center><button mat-raised-button color="primary" class="button1" type="button" > Modifier  </button>
-                    <button mat-raised-button color="warn" class="button1" (click)="deleteCompte(compte.idcompte)" type="button" > Supprimer </button> 
+                    <button mat-raised-button color="warn" class="button1" (click)="deleteCompte(compte.idcompte)" type="button" [routerLink]="['/home']" routerLinkActive="router-link-active"> Supprimer </button> 
                   </center></td>
               </tr>
           </ng-template>
@@ -50,21 +50,19 @@
           <div class="form-group">
             <label>Relevé d'Identité Bancaire</label>
           <input type="text" class="form-control" pattern="[0-9]{13}" 
-          required  #rib="ngModel" [(ngModel)]="compte.rib">
+          required #rib="ngModel" [(ngModel)]="compte.rib">
           </div>
-          <div class="alert alert-danger" *ngIf="rib.invalid && rib.touched" >
-          Le RIB est obligatoire !! 
           <div class="alert alert-danger" *ngIf="rib.errors.pattern" >
             Le RIB doit avoir une longueur de 13 chiffres !
             </div>
-          </div>
+   
                
           
           <div class="form-group">
           <label>Type du compte</label>
           <br>
             <mat-form-field  >
-              <mat-select [(ngModel)]="compte.type" name="type" >
+              <mat-select [(ngModel)]="compte.type"  >
                 <mat-option *ngFor="let type of types" [value]="type.value" >
                   {{type.viewValue}}
                 </mat-option>
@@ -77,7 +75,7 @@
               <br>
             <mat-form-field class="form-group" appearance="fill">
               <mat-label>Devise</mat-label>
-              <mat-select  name="type" [(ngModel)]="compte.devise"> 
+              <mat-select  [(ngModel)]="compte.devise"> 
                 <mat-option *ngFor="let dev of devise" [value]="dev.value">
                  {{dev.value}}: {{dev.viewValue}}
                 </mat-option>
@@ -89,52 +87,44 @@
             <br>
             <mat-form-field >
               <mat-label>Choose a date</mat-label>
-              <input matInput [matDatepicker]="picker" [(ngModel)]="compte.datedecreation" required  #dcre="ngModel" >
+              <input matInput [matDatepicker]="picker" [(ngModel)]="compte.datedecreation" required >
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             </div>
-            <div class="alert alert-danger" *ngIf="dcre.invalid && dcre.touched" >
-              Ce champs est obligatoire !!
-              </div>
+
   
           <div class="form-group">
           <label>Solde Actuel</label>
           <br>
           <mat-form-field floatLabel="never">
-            <input matInput type="number" class="example-right-align" placeholder="0" [(ngModel)]="compte.soldeactuel" required  #sact="ngModel">
+            <input matInput type="number" class="example-right-align" placeholder="0" [(ngModel)]="compte.soldeactuel" required >
             <span matPrefix>{{compte.devise}}&nbsp;</span>
   
           </mat-form-field>
           </div>
-          <div class="alert alert-danger" *ngIf="sact.invalid && sact.touched" >
-            Ce champs est obligatoire !!
-            </div>
+
   
             <div class="form-group">
               <label>Solde Disponible</label>
               <br>
               <mat-form-field floatLabel="never">
-                <input matInput type="number" class="example-right-align" placeholder="0" [(ngModel)]="compte.soldedisponible" required  #sdis="ngModel">
+                <input matInput type="number" class="example-right-align" placeholder="0" [(ngModel)]="compte.soldedisponible" required  name="sdis">
                 <span matPrefix>{{compte.devise}}&nbsp;</span>
             
               </mat-form-field>
               </div>
-              <div class="alert alert-danger" *ngIf="sdis.invalid && sdis.touched" >
-                Ce champs est obligatoire !!
-            </div>
+
             <div class="form-group">
               <label>Interet</label>
               <br>
               <mat-form-field floatLabel="never">
-                <input matInput type="number" class="example-right-align" placeholder="0,0%" [(ngModel)]="compte.interet" required  #interet="ngModel">
+                <input matInput type="number" class="example-right-align" placeholder="0,0%" [(ngModel)]="compte.interet" required  name="interet">
                 <span matSuffix>%</span>
             
               </mat-form-field>
               </div>
-              <div class="alert alert-danger" *ngIf="interet.invalid && interet.touched" >
-                Ce champs est obligatoire !!
-            </div>
+
               <div class="form-group">
                 <div class="p-field-checkbox">
                   <label>Etat (Actif/Inactif)</label>
@@ -179,6 +169,6 @@
               </select>
             </div>
   
-            <button mat-raised-button color="primary" class="button1" (click)="assign(compteid,userid)" type="button" > Affecter  </button>
+            <button mat-raised-button color="primary" class="button1" (click)="assign(compteid,userid)" type="button" [routerLink]="['/home']" routerLinkActive="router-link-active" > Affecter  </button>
           </mat-tab>
     </mat-tab-group>

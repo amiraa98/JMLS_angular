@@ -1,0 +1,38 @@
+<!-- <div class="container">
+    <header >
+     class="jumbotron"<p>{{ content }}</p>
+      <p>{{ listCompte }}</p>
+    </header>
+  </div> -->
+  
+  
+    
+    <mat-tab-group>
+  
+      <!-- Tableau d'affichage, supprission et modification -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="example-tab-icon">pageview</mat-icon>
+          Mes comptes
+        </ng-template>
+        <p-table [value]="listCompte" responsiveLayout="scroll" >
+        
+          <ng-template pTemplate="header">
+              <tr>
+                  <th *ngFor="let col of cols">
+                    <center> {{col.header}}</center> 
+                  </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-compte>
+              <tr>
+                  <td *ngFor="let col of cols">
+                    <center> {{compte[col.field]}}</center> 
+                  </td>
+
+              </tr>
+          </ng-template>
+      </p-table>
+     </mat-tab>
+  
+    </mat-tab-group>
